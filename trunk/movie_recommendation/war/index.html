@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- Copyright (c) 2010 Google Inc.-->
+
+<!-- Licensed under the Apache License, Version 2.0 (the "License"); you may not-->
+<!-- use this file except in compliance with the License. You may obtain a copy of-->
+<!-- the License at-->
+
+<!-- http://www.apache.org/licenses/LICENSE-2.0-->
+
+<!-- Unless required by applicable law or agreed to in writing, software-->
+<!-- distributed under the License is distributed on an "AS IS" BASIS, WITHOUT-->
+<!-- WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the-->
+<!-- License for the specific language governing permissions and limitations under-->
+<!-- the License.-->
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<link href="movierecommenderdemo.css" type="text/css" rel="stylesheet"/>
+<title>Movie Recommender Demo</title>
+</head>
+
+<body>
+<h1>Movie Recommendation Demo</h1>
+<h2>Using the Google Prediction API</h2>
+User 405 likes the following movies:
+<div>
+<div class="movie">Sound of Music, The (1965)</div>
+<div class="movie">Braveheart (1995)</div>
+<div class="movie">Wizard of Oz, The (1939)</div>
+<div class="movie">Taxi Driver (1976)</div>
+<div class="movie">Home Alone (1990)</div>
+<div class="movie">...</div>
+</div>
+
+<div style="clear:both">and dislikes the following movies:</div>
+<div>
+<div class="movie">Lion King, The (1994)</div>
+<div class="movie">Beauty and the Beast (1991)</div>
+<div class="movie">Blade Runner (1982)</div>
+<div class="movie">Manchurian Candidate, The (1962)</div>
+<div class="movie">Oliver & Company (1988)</div>
+<div class="movie">...</div>
+</div>
+
+<div style="clear:both;padding-top:20px">Which following movies should we recommend to User 405?</div>
+
+<div>
+<div class="movie">Pulp Fiction, The (1994)</div>
+<div class="movie">Swan Princess, The (1994)</div>
+<div class="movie">Unstrung Heros (1995)</div>
+</div>
+
+<div style="clear:both">
+<form action="movierecommenderdemo" method="get">
+<input type="submit" value="Ask the Prediction API"></input>
+</form>
+</div>
+</body>
+</html>
