@@ -1,0 +1,81 @@
+Blog Moderation Using the Google Prediction API
+
+
+This app uses the Google Prediction API <http://code.google.com/apis/predict> to
+perform comment moderation on a blog web application. It is able to
+differentiate regular comments from "spam" blog comments. The application is
+written in Python and runs on Google App Engine. Feel free to use this code as
+a template in your own applications.
+
+
+Step 1: Upload data to Google Storage
+
+To perform this task, we first need a set of data that fits our criteria. Our
+dataset needs both spam and non-spam ("ham") examples. In this example, we used
+public domain physics textbooks to provide our ham examples. The motivation was
+that this blog was reporting on current physics research for a mainstream
+audience. In theory, training on physics books would give an adequate dataset.
+Once your ham examples have been collected, the script parasplit.py may help
+transform your examples into the comma separated format required:
+
+$python parasplit.py INPUT_TEXT ham
+
+This command will split the INPUT_TEXT, paragraph by paragraph, and turn each
+into a single text feature, each with the classification of "ham".
+
+Next, we would like some sample spam blog comments. There is a toy corpus of
+spam blog comments hosted on ILPS:
+http://ilps.science.uva.nl/resources/commentspam
+
+We have provided a script spamparse.py:
+
+$python spamparse.py
+
+When run in the root directory of the corpus (with the blog-spam-assessments.txt
+in the same directory), it will generate a CSV format for the spam comments.
+
+You are, of course, encouraged to use your own datasets for your applications.
+All data instances (ham, spam, any other classified data) must be aggregated
+into one file. This file must be uploaded to Google Storage, either by gsutil
+(for more details about gsutil, see
+<http://code.google.com/apis/storage/docs/getting-started.html#getstart>) or
+via the Google Storage Manager https://sandbox.google.com/storage/
+
+
+Step 2: Train
+
+You can make a training call either directly from a command line
+(e.g., using cURL) or your favorite programming languages (see
+<http://code.google.com/apis/predict/docs/libraries.html> for
+third-party libraries).  Here we make a training call using train.sh
+from the code samples at
+<http://code.google.com/apis/predict/docs/samples.html>:
+
+$ get-auth-token.sh ENTER_MY_EMAIL ENTER_MY_PASSWORD
+$ train.sh ENTER_YOUR_BUCKET/FILE.csv
+
+ENTER_MY_EMAIL, ENTER_MY_PASSWORD, and ENTER_YOUR_BUCKET should be changed.
+You also need to copy your authentication token to the root directory of the
+App Engine application. Copy the auth-token file to the src/ directory
+
+
+Step 3: Predict
+
+Before you run the sample Python web app on the Google App Engine, you might
+want to look at the App Engine documentation at
+<http://code.google.com/appengine/docs/python/overview.html>.
+
+Changes you will need to make to run this application on your own data:
+- In app.yaml, you need to change APPLICATION_NAME to the name of your
+  application on App Engine
+- You must copy your auth token to the file src/auth-token.
+  (generate using get-auth-token.sh)
+- In blog.py, you need to change the MODEL_NAME (line 91) to your trained model,
+  (i.e. BUCKET/FILE.CSV)
+
+You can run your application locally to test, see instructions here:
+<http://code.google.com/appengine/docs/python/gettingstarted/helloworld.html>
+
+Please send questions or comments about this demo app to
+prediction-api-discuss group at
+<https://groups.google.com/group/prediction-api-discuss>.
