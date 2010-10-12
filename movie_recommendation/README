@@ -1,0 +1,81 @@
+Movie Recommendation Using the Google Prediction API
+
+This app uses the Google Prediction API
+<http://code.google.com/apis/predict> to recommend a movie to a user.
+A movie recommender can be seen as a machinery that takes as input a
+movie and returns a rating.  The following three steps demonstrate how
+to build a movie recommender by learning from historical data, and how
+to make predictions on new movies in a Java web app running on the
+Google App Engine.
+
+
+Step 1: Upload data to Google Storage
+
+One possible way of recommending a new movie is to learn from a user's
+ratings for previous movies.  In this project, we use the movie rating
+data from the GroupLens research project at the University of
+Minnesota <http://www.grouplens.org>.  Specifically, we use the 100k
+Ratings Data Set at <http://www.grouplens.org/node/73>.
+ 
+Suppose we want to recommend movies for User 405.  We run a Python
+script, prepare-data.py, to extract User 405's previous ratings in
+ml-data/ua.base and combine a movie's genre information in a comma
+separated value format:
+
+$ python prepare-data.py ml-data/ua.base ml-data/u.item 405 > ua.user.405.csv
+
+Each line contains a User 405's rating for a movie.  The first column
+is the rating on a scale from one to five, the rest of columns indicate
+the genre of the movie.  There are 19 genres, and a column contains
+value '1' if the movie belongs to the genre (see ml-data/u.genre for a
+complete list of genres).
+
+We can upload the training data, ua.user.405.csv, to Google Storage
+using gsutil (for more details about gsutil, see
+<http://code.google.com/apis/storage/docs/getting-started.html#getstart>)
+as follows:
+
+$ gsutil cp ua.user.405.csv gs://ENTER_YOUR_BUCKET/ua.user.405.csv
+
+ENTER_YOUR_BUCKET should be changed to your own Google Storage bucket.
+
+
+Step 2: Train
+
+You can make a training call either directly from a command line
+(e.g., using cURL) or your favorite programming languages (see
+<http://code.google.com/apis/predict/docs/libraries.html> for
+third-party libraries).  Here we make a training call using train.sh
+from the code samples at
+<http://code.google.com/apis/predict/docs/samples.html>:
+
+$ get-auth-token.sh ENTER_MY_EMAIL ENTER_MY_PASSWORD
+$ train.sh ENTER_YOUR_BUCKET/ua.user.405.csv
+
+ENTER_MY_EMAIL, ENTER_MY_PASSWORD, and ENTER_YOUR_BUCKET should be
+changed.
+
+
+Step 3: Predict
+
+Before you can run the sample Java web app on the Google App Engine,
+please a) download Google API Client Library for Java
+<http://code.google.com/p/google-api-java-client/> b) input your
+credential and bucket name in the following Java source file,
+
+src/com/google/api/predict/movierecommenderdemo/ClientLoginCredentials.java
+
+The Java web app demonstrates how to use the Google Prediction API to
+recommend three movies that User 405 has not rated before.  After
+clicking the button, the servlet makes prediction calls to the Google
+Prediction API and passes the genre information as signals, and the
+Google Prediction API returns predicted scores using the model learned
+in Step 2.  Finally, the web app sorts three movies based on predicted
+rating, and display movies in the decreasing order of predicted
+ratings.
+
+
+Please send questions or comments about this demo app to
+prediction-api-discuss group at
+<https://groups.google.com/group/prediction-api-discuss>.
+
