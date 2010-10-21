@@ -32,7 +32,8 @@ We have provided a script spamparse.py:
 $python spamparse.py
 
 When run in the root directory of the corpus (with the blog-spam-assessments.txt
-in the same directory), it will generate a CSV format for the spam comments.
+in the same directory), it will generate a CSV format for both the spam and ham
+comments. In this app example, we just use the generated spam comments.
 
 You are, of course, encouraged to use your own datasets for your applications.
 All data instances (ham, spam, any other classified data) must be aggregated
